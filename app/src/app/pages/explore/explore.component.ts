@@ -29,6 +29,7 @@ export class ExploreComponent implements OnInit {
     start: 0
   };
   items      = [];
+  readonly   = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -107,6 +108,7 @@ export class ExploreComponent implements OnInit {
 
         if (res.ok) {
           this.items = res.results;
+          this.readonly = res.readonly;
         }
       });
 

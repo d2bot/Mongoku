@@ -5,6 +5,13 @@ import factory from '../lib/Factory';
 
 export const api = express.Router();
 
+const READ_ONLY = typeof process.env.READ_ONLY === 'undefined' ? true : (process.env.READ_ONLY === '1');
+
+api.get('/env', async (req, res, next) => {
+  const servers = await factory.mongoManager.getServersJson();
+  return res.json(process.env);
+});
+
 // Get servers
 api.get('/servers', async (req, res, next) => {
   const servers = await factory.mongoManager.getServersJson();
@@ -87,6 +94,13 @@ api.get('/servers/:server/databases/:database/collections/:collection/documents/
 });
 
 api.post('/servers/:server/databases/:database/collections/:collection/documents/:document', bodyParser.json(), async (req, res, next) => {
+  if (READ_ONLY) {
+    return res.json({
+        ok: false,
+        message: 'We are in read_only mode now!'
+    })
+  }
+
   const server     = req.params.server;
   const database   = req.params.database;
   const collection = req.params.collection;
@@ -110,6 +124,13 @@ api.post('/servers/:server/databases/:database/collections/:collection/documents
 })
 
 api.delete('/servers/:server/databases/:database/collections/:collection/documents/:document', async (req, res, next) => {
+  if (READ_ONLY) {
+    return res.json({
+        ok: false,
+        message: 'We are in read_only mode now!'
+    })
+  }
+
   const server     = req.params.server;
   const database   = req.params.database;
   const collection = req.params.collection;
@@ -177,7 +198,8 @@ api.get('/servers/:server/databases/:database/collections/:collection/query', as
 
     return res.json({
       ok:      true,
-      results: results
+      results: results,
+      readonly: READ_ONLY,
     });
   } catch(err) {
     return next(err);

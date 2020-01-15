@@ -34,6 +34,7 @@ const ESCAPE = (a) => {
 })
 export class PrettyJsonComponent implements OnInit {
   @Input()  json: any;
+  @Input()  readonly: boolean;
   @Input()  autoCollapse = false;
   @Output() go = new EventEmitter();
   @Output() edit = new EventEmitter();
