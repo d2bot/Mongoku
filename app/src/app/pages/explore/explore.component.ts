@@ -144,6 +144,11 @@ export class ExploreComponent implements OnInit {
 
     this.mongoDb.update(this.server, this.database, this.collection, oldId, json, partial)
       .subscribe((res: any) => {
+        if (!res.ok) {
+          this.notifService.notifyError(res.message);
+          return ;
+        }
+
         this.items.forEach((item, index) => {
           const _id = item && item._id && item._id.$value;
           if (_id === oldId) {
