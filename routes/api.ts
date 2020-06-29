@@ -157,7 +157,7 @@ api.get('/servers/:server/databases/:database/collections/:collection/query', as
   const database   = req.params.database;
   const collection = req.params.collection;
 
-  let query = req.query.q;
+  let query = decodeURIComponent(req.query.q);
   if (typeof query !== "object") {
     try {
       query = JSON.parse(query);
@@ -211,7 +211,7 @@ api.get('/servers/:server/databases/:database/collections/:collection/count', as
   const database   = req.params.database;
   const collection = req.params.collection;
 
-  let query = req.query.q;
+  let query = decodeURIComponent(req.query.q);
   if (typeof query !== "object") {
     try {
       query = JSON.parse(query);

@@ -11,7 +11,6 @@ export interface Host {
 const DEFAULT_HOSTS = process.env.MONGOKU_DEFAULT_HOST ? process.env.MONGOKU_DEFAULT_HOST.split(';') : ['localhost:27017'];
 const DATABASE_FILE = process.env.MONGOKU_DATABASE_FILE || path.join(os.homedir(), '.mongoku.db');
 
-
 export class HostsManager {
   private _db: Nedb;
 
